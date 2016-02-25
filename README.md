@@ -14,13 +14,15 @@ You can customize almost everything, including:
 - Popup lifetime - await dismissal or set custom
 - Something else I probably forgot
 
+You can provide any image you like, even transparent. It will be resized to fit the icon tile plus any padding that you specify.
+
 ##Usage
 With so many options, it was difficult to design a configuration. Neither a gigantic constructor nor a million properties were desirable. I ended up grouping it into 2x models for the image & coloring, supplying animation flags in the constructor, and duration options via the Show method.
 
 Here's how to set up the color and image models:
 
 ```C#
-Coloring coloring = new Coloring()
+var coloring = new Coloring()
 {
     BackColor = Color.White,
     Tile = Control.DefaultBackColor,
@@ -28,7 +30,7 @@ Coloring coloring = new Coloring()
     Body = Brushes.Black
 };
 
-NotifIcon notifIcon = new NotifIcon()
+var notifIcon = new NotifIcon()
 {
     Image = Image.FromFile(@""),
     Padding = 10
@@ -53,4 +55,6 @@ From there, you can simply call `Show()` as you would on a standard Form (the no
 
 If there is a lifetime marked, the user entering their mouse into the region will stop the timer and leaving will resume it. I forgot to include options for direction in the test form. But if it's sliding, you can control which direction it comes from. It will also automatically calculate the exit direction so no need to supply that.
 
-Oh and in terms of licensing. Pretty simple, use it wherever you like but if your application has an about/credits area, please include a link to the repo in it. Just don't attempt to profit from this for the love of god. Enjoy!
+##Licensing
+
+Pretty simple, use it wherever you like but if your application has an about/credits area, a link to the repo in it would be awesome. Just don't attempt to profit from this for the love of god. Enjoy!
