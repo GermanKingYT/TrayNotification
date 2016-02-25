@@ -14,7 +14,7 @@ You can customize almost everything, including:
 - Popup lifetime - await dismissal or set custom
 - Something else I probably forgot
 
-You can provide any image you like, even transparent. It will be resized to fit the icon tile plus any padding that you specify.
+You can provide any image you like, even transparent. It will be resized to fit the icon tile plus any padding that you specify without user intervention.
 
 ##Usage
 With so many options, it was difficult to design a configuration. Neither a gigantic constructor nor a million properties were desirable. I ended up grouping it into 2x models for the image & coloring, supplying animation flags in the constructor, and duration options via the Show method.
