@@ -46,31 +46,23 @@ namespace TrayNotification.Providers
         {
             Target = form;
 
-            Target.Load += new EventHandler(Form_Load);
-            Target.VisibleChanged += new EventHandler(Form_VisibleChanged);
-            Target.Closing += new CancelEventHandler(Form_Closing);
-        }
-        
-        private void Form_Load(object sender, EventArgs e)
-        {
-            AnimateWindow(Target.Handle, Duration, AW_ACTIVATE | (int)Animation | (int)Direction);
-        }
+            Target.Load += (o, e) =>
+                AnimateWindow(Target.Handle, Duration, AW_ACTIVATE | (int)Animation | (int)Direction); 
 
-        private void Form_VisibleChanged(object sender, EventArgs e)
-        {
-            var flags = (int)Animation | (int)Direction;
+            Target.Closing += (o, e) =>
+                AnimateWindow(Target.Handle, Duration, AW_HIDE | (int)Animation | (int)Direction);
 
-            if (Target.Visible)
-                flags |= AW_ACTIVATE;
-            else
-                flags |= AW_HIDE;
+            Target.VisibleChanged += (o, e) =>
+            {
+                var flags = (int)Animation | (int)Direction;
 
-            AnimateWindow(Target.Handle, Duration, flags);
-        }
+                if (Target.Visible)
+                    flags |= AW_ACTIVATE;
+                else
+                    flags |= AW_HIDE;
 
-        private void Form_Closing(object sender, CancelEventArgs e)
-        {
-            AnimateWindow(Target.Handle, Duration, AW_HIDE | (int)Animation | (int)Direction);
+                AnimateWindow(Target.Handle, Duration, flags);
+            };
         }
     }
 }
