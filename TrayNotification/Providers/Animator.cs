@@ -55,7 +55,6 @@ namespace TrayNotification.Providers
 
             Target.VisibleChanged += (o, e) =>
             {
-
                 if (Target.Visible)
                     flags |= AW_ACTIVATE;
                 else
