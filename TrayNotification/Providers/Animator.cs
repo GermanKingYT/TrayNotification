@@ -45,16 +45,16 @@ namespace TrayNotification.Providers
         public Animator(Form form)
         {
             Target = form;
+            var flags = (int)Animation | (int)Direction;
 
             Target.Load += (o, e) =>
-                AnimateWindow(Target.Handle, Duration, AW_ACTIVATE | (int)Animation | (int)Direction); 
+                AnimateWindow(Target.Handle, Duration, AW_ACTIVATE | flags); 
 
             Target.Closing += (o, e) =>
-                AnimateWindow(Target.Handle, Duration, AW_HIDE | (int)Animation | (int)Direction);
+                AnimateWindow(Target.Handle, Duration, AW_HIDE | flags);
 
             Target.VisibleChanged += (o, e) =>
             {
-                var flags = (int)Animation | (int)Direction;
 
                 if (Target.Visible)
                     flags |= AW_ACTIVATE;
