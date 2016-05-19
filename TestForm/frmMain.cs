@@ -52,7 +52,7 @@ namespace TestForm
                 Padding = 10
             };
 
-            _notification = new Notification((Style)cbFlags.SelectedItem, 
+            _notification = new Notification((Style)cbFlags.SelectedItem,
                 Direction.Up, (int)nudDuration.Value)
             {
                 Title = txtTitle.Text,
@@ -68,6 +68,8 @@ namespace TestForm
                 _notification.Show((int)nudDelay.Value);
             else
                 _notification.Show();
+
+            txtBody.Focus();
         }
 
         private void btnDismiss_Click(object sender, EventArgs e)

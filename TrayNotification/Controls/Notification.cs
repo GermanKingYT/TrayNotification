@@ -46,6 +46,7 @@ namespace TrayNotification
             this.Size = new Size(380, 80);
 
             this.DoubleBuffered = true;
+            this.TopMost = false;
 
             var bounds = Screen.PrimaryScreen.WorkingArea;
 
@@ -68,7 +69,7 @@ namespace TrayNotification
         /// <param name="animation">Style of animation to play</param>
         /// <param name="direction">Entrance direction. Exit direction is computed automatically.</param>
         /// <param name="duration">Duration of the animation.</param>
-         public Notification(Style animation, Direction direction, int duration)
+        public Notification(Style animation, Direction direction, int duration)
         {
             SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.OptimizedDoubleBuffer |
                      ControlStyles.ResizeRedraw | ControlStyles.UserPaint, true);
@@ -113,6 +114,25 @@ namespace TrayNotification
                                 new RectangleF(100, 40, (this.Width - 100), this.Height));
         }
 
+        protected override bool ShowWithoutActivation
+        {
+            get
+            {
+                return true;
+            }
+        }
+
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                var @params = base.CreateParams;
+                @params.ExStyle |= 0x08000000;
+
+                return @params;
+            }
+        }
+
         /// <summary>
         /// Shows the notification for a set amount of time.
         /// </summary>
@@ -128,10 +148,13 @@ namespace TrayNotification
                     Interval = delay
                 };
 
-                _lifeTimer.Tick += new EventHandler(Form_Close);
+                _lifeTimer.Tick += (o, e) =>
+                    this.Close();
 
-                this.MouseEnter += new EventHandler(Mouse_Enter);
-                this.MouseLeave += new EventHandler(Mouse_Leave);
+                this.MouseEnter += (o, e) =>
+                    _lifeTimer.Stop();
+                this.MouseLeave += (o, e) =>
+                    _lifeTimer.Start();
 
                 _lifeTimer.Start();
             }
@@ -149,24 +172,9 @@ namespace TrayNotification
             base.Close();
         }
 
-        private void Mouse_Enter(object sender, EventArgs e)
-        {
-            _lifeTimer.Stop();
-        }
-
-        private void Mouse_Leave(object sender, EventArgs e)
-        {
-            _lifeTimer.Start();
-        }
-
         private void Form_Shown(object sender, EventArgs e)
         {
             _animator.Direction = Sibling.GetSiblingDirection(_animator.Direction);
-        }
-
-        private void Form_Close(object sender, EventArgs e)
-        {
-            this.Close();
         }
     }
 }
